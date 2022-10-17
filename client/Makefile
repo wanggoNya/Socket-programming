@@ -5,7 +5,7 @@ CC = gcc
 INC = .
 CFLAGS = -g $(INC) -c -Wall -Werror -Wextra  -Winline -Wsign-compare -Wunused-parameter -Wpointer-arith -Wshadow -Wstrict-prototypes -Wmissing-prototypes
 LDFLAGS = -lpthread -pthread
-OBJS = client.o clientFunc.o 
+OBJS = client.o 
 SRCS = $(wildcard *.c)
 
 TARGET = main.out
