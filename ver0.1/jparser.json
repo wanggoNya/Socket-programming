@@ -1,0 +1,30 @@
+{
+				"thread_num": 5,
+				"thread": [
+				{
+						"name": "sub_thread1",
+						"thread_option": 1,
+						"hash_file": "hash1.csv"
+				},
+				{
+						"name": "sub_thread2",
+						"thread_option": 3,
+						"hash_file": "hash2.csv"
+				},
+				{
+						"name": "sub_thread3",
+						"thread_option": 4,
+						"hash_file": "hash3.csv"
+				},
+				{
+						"name": "sub_thread4",
+						"thread_option": 2,
+						"hash_file": "hash4.csv"
+				},
+				{
+						"name": "sub_thread5",
+						"thread_option": 3,
+						"hash_file": "hash5.csv"
+				}
+				]
+}
