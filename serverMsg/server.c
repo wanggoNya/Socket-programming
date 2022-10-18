@@ -1,12 +1,9 @@
 #include <stdio.h>
-#include <netdb.h>
-#include <netinet/in.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <arpa/inet.h>
-#include <unistd.h>
+#include <stdlib.h> // atoi()
+#include <string.h> // bzero()
+#include <unistd.h> // read(), write(), close()
+#include <netinet/in.h> // in_addr, sockaddr_in //#include <sys/socket.h> 
+#include <arpa/inet.h> // inet_addr()
 #define MAX 80
 #define SA struct sockaddr
 
@@ -103,4 +100,5 @@ int main(int argc, char *argv[])
 		}
 
 		close(servfd);
+		return 0;
 }
