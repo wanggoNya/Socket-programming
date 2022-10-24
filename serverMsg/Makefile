@@ -4,7 +4,7 @@ CC = gcc
 
 INC = .
 CFLAGS = -g $(INC) -c -Wall -Werror -Wextra  -Winline -Wsign-compare -Wunused-parameter -Wpointer-arith -Wshadow -Wstrict-prototypes -Wmissing-prototypes
-OBJS = server.o 
+OBJS = server.o serverFunc.o
 SRCS = $(wildcard *.c)
 
 TARGET = main.out

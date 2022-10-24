@@ -1,6 +1,12 @@
 #include <stdio.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <arpa/inet.h>
-#include <stdlib.h>
-#include <string.h>
+#include <stdlib.h> // atoi()
+#include <string.h> // bzero()
+#include <unistd.h> // read(), write(), close()
+#include <netinet/in.h> // in_addr, sockaddr_in //#include <sys/socket.h> 
+#include <arpa/inet.h> // inet_addr()
+#define MAX 80
+#define SA struct sockaddr
+
+void usage(char *argv[]);
+int chat(int privfd);
+int socketCreation(char *argv[]);
