@@ -35,20 +35,10 @@ int socketCreation(char *argv[])
 		int clntfd;
 		struct sockaddr_in servaddr;
 
-
 		clntfd = socket(PF_INET, SOCK_STREAM, 0);
-
-		//u_long isNonBlocking = 1;
-//		int flag = fcntl(socket, F_GETFL,0);
-//		fcntl(socket, F_SETFL, flag | O_NONBLOCK);
-	
-//		ioctlsocket(socket,        //Non-Blocking으로 변경할 소켓
-//						FIONBIO,       //변경할 소켓의 입출력 모드
-//						&isNonBlocking //넘기는 인자, 여기서는 nonblocking설정 값
-//				   );
-
 		if (clntfd == -1) {
 				printf("socket creation failed...\n");
+				usage(argv);
 				return 1;
 		}
 		else printf("Socket successfully created..\n");
@@ -68,13 +58,7 @@ int socketCreation(char *argv[])
 
 		chat(clntfd);
 
-		other_routine();
 		close(clntfd);
 
 		return 0;
-}
-
-void other_routine(void)
-{
-		printf("----- Other routine processing\n");
 }
