@@ -10,30 +10,61 @@ int chat(int privfd)
 {
 		char buff[MAX];
 		int n;
+		int read_rtn;
 
 		while(1) {
+				printf("\t\t\tread wait\n");
+
 				bzero(buff, MAX);
 
-				read(privfd, buff, sizeof(buff));
+				read_rtn = read(privfd, buff, sizeof(buff));
 
-				printf("From client: %s\t To client : ", buff);
-
-				if (strncmp("exit", buff, 4) == 0) {
-						printf("Client Exit...\n");
-						return 1;
+				if (read_rtn < 0)
+				{
+						if(errno = EAGAIN)
+						{
+								printf("\t\t\tread EAGAIN\n");
+						}
+						else
+						{
+								printf("----- read error\n");
+								printf("----- Socket close\n");
+								//	close(privfd);
+								return 0;
+						}
 				}
+				else if(read_rtn == 0)
+				{
 
-				bzero(buff, MAX);
-				n = 0;
-
-				while ((buff[n++] = getchar()) != '\n');
-
-				write(privfd, buff, sizeof(buff));
-
-				if (strncmp("exit", buff, 4) == 0) {
-						printf("Server Exit...\n");
+						printf("----- Socket close\n");
+						//		close(privfd);
+						//		break;
 						return 0;
 				}
+				else
+				{
+						printf("From client: %s\t To client : ", buff);
+
+						if (strncmp("exit", buff, 4) == 0) 
+						{
+								printf("Client Exit...\n");
+								return 1;
+						}
+
+						bzero(buff, MAX);
+						n = 0;
+
+						while ((buff[n++] = getchar()) != '\n');
+
+						write(privfd, buff, sizeof(buff));
+
+						if (strncmp("exit", buff, 4) == 0) 
+						{
+								printf("Server Exit...\n");
+								return 0;
+						}
+				}
+				routine();
 		}
 		return 1;
 }
@@ -45,23 +76,12 @@ int socketCreation(char *argv[])
 		socklen_t len;
 
 		servfd = socket(PF_INET, SOCK_STREAM, 0);
+
+
 		if (servfd == -1) {
 				printf("socket creation failed...\n");
 				return 1;	
 		}
-
-		if( fcntl( servfd, F_SETFL, O_NONBLOCK) == -1 ) {
-				return -1; // error
-		}
-
-		int error = 0;
-		socklen_t len2 = sizeof( error );
-		if( getsockopt(servfd, SOL_SOCKET, SO_ERROR, &error, &len2) < 0 ) {
-				// 값을 가져오는데 에러 발생
-				// errno을 가지고 에러 값을 출력
-				// 연결 오류로 처리
-		}
-
 		else printf("Socket successfully created..\n");
 
 		bzero(&servaddr, sizeof(servaddr));
@@ -82,35 +102,52 @@ int socketCreation(char *argv[])
 		}
 		else printf("Server listening..\n");
 
+		int flag; 
+		flag = fcntl(servfd, F_GETFL, 0 );
+		fcntl(servfd, F_SETFL, flag | O_NONBLOCK );
+
+
 		int funcReturn = 1;
+
+
 		while(funcReturn)
 		{
 				len = sizeof(cliaddr);
 
 				privfd = accept(servfd, (SA*)&cliaddr, &len);
+
+				flag = fcntl(privfd, F_GETFL, 0 );
+				fcntl(privfd, F_SETFL, flag | O_NONBLOCK );
+
+
 				if (privfd < 0) {
 						printf("server accept failed...\n");
-						return 1;
+						funcReturn = 1;
+						routine();
+						continue;
+						//return 1;
 				}
 				else printf("server accept the client...\n");
+
 
 				printf("\n=====client 연결=====\nip : %s\nport : %s\n=====================\n\n",
 								inet_ntoa(cliaddr.sin_addr), argv[1]);
 
 				funcReturn = chat(privfd);
 
-				printf("\n=====client 종료=====\nip : %s\nport : %s\n=====================\n\n",
-								inet_ntoa(cliaddr.sin_addr), argv[1]);
-
-				if(funcReturn) printf("Server listening..\n");
+				if(funcReturn)
+				{
+						printf("\n=====client 종료=====\nip : %s\nport : %s\n=====================\n\n", inet_ntoa(cliaddr.sin_addr), argv[1]);
+						printf("Server listening..\n");
+				}
 				else printf("Server Closing..\n");
 		}
-
 		close(servfd);
 		return 0;
 }
 
-void other_routine(void)
+void routine(void)
 {
-		printf("----- Other routine processing\n");
+		printf("\t\t\t\t routine..........\n");
+		sleep(1);
 }

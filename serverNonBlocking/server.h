@@ -6,9 +6,13 @@
 #include <arpa/inet.h> // inet_addr()
 #define MAX 80
 #define SA struct sockaddr
+
+
+#include <errno.h>
 #include <fcntl.h>
 
 void usage(char *argv[]);
 int chat(int privfd);
 int socketCreation(char *argv[]);
-void other_routine(void);
+
+void routine(void);
