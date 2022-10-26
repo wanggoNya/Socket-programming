@@ -26,7 +26,7 @@ void chat(int clntfd)
 
 				bzero(buff, sizeof(buff));
 				read(clntfd, buff, sizeof(buff));
-				printf("From Server : %s", buff);
+				printf("\t\t\tFrom Server : %s", buff);
 		}
 }
 
