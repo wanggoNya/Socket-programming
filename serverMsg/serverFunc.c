@@ -16,7 +16,7 @@ int chat(int privfd)
 
 				read(privfd, buff, sizeof(buff));
 				
-				printf("From client: %s\t To client : ", buff);
+				printf("From client: %s\t\t\tTo client : ", buff);
 
 				if (strncmp("exit", buff, 4) == 0) {
 						printf("Client Exit...\n");
